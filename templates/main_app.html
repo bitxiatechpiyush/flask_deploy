@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Application</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input {
+            width: 60%;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        }
+        .update {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        }
+        #logout {
+            float: right;
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CRUD Application</h1>
+        <button id="logout" onclick="logout()">Logout</button>
+        <div id="app" style="display: none;">
+            <input type="text" id="newItem" placeholder="New item name">
+            <button onclick="addItem()">Add Item</button>
+            <ul id="itemList"></ul>
+        </div>
+    </div>
+
+    <script>
+        function checkAuth() {
+            fetch('/api/check_auth')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.authenticated) {
+                        document.getElementById('app').style.display = 'block';
+                        fetchItems();
+                    } else {
+                        window.location.href = '/login';
+                    }
+                });
+        }
+
+        function fetchItems() {
+            fetch('/api/items')
+                .then(response => response.json())
+                .then(items => {
+                    const itemList = document.getElementById('itemList');
+                    itemList.innerHTML = '';
+                    items.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item.name;
+                        
+                        const updateButton = document.createElement('button');
+                        updateButton.textContent = 'Update';
+                        updateButton.className = 'update';
+                        updateButton.onclick = () => updateItem(item._id);
+                        
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.className = 'delete';
+                        deleteButton.onclick = () => deleteItem(item._id);
+                        
+                        li.appendChild(updateButton);
+                        li.appendChild(deleteButton);
+                        itemList.appendChild(li);
+                    });
+                });
+        }
+
+        function addItem() {
+            const newItem = document.getElementById('newItem').value;
+            fetch('/api/items', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: newItem})
+            }).then(() => {
+                document.getElementById('newItem').value = '';
+                fetchItems();
+            });
+        }
+
+        function updateItem(id) {
+            const newName = prompt('Enter new name:');
+            if (newName) {
+                fetch(`/api/items/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name: newName})
+                }).then(() => fetchItems());
+            }
+        }
+
+        function deleteItem(id) {
+            fetch(`/api/items/${id}`, {method: 'DELETE'})
+                .then(() => fetchItems());
+        }
+
+        function logout() {
+            window.location.href = '/logout';
+        }
+
+        checkAuth();
+    </script>
+</body>
+</html>
