@@ -9,23 +9,23 @@ sudo mkdir -p /var/www/flask_deploy
 echo "moving files to app folder"
 sudo mv  * /var/www/flask_deploy
 
-# # Navigate to the app directory
-# cd /var/www/flask_deploy/
+# Navigate to the app directory
+cd /var/www/flask_deploy/
 
-# sudo apt-get update
-# echo "installing python and pip"
-# # sudo apt-get install -y python3 python3-pip
+sudo apt-get update
+echo "installing python and pip"
+sudo apt-get install -y python3 python3-pip
 
-# # Install application dependencies from requirements.txt
-# echo "Install application dependencies from requirements.txt"
-# sudo pip install -r requirements.txt
-# sudo systemctl restart nginx
+# Install application dependencies from requirements.txt
+echo "Install application dependencies from requirements.txt"
+sudo pip install -r requirements.txt ----break-system-packages
+sudo systemctl restart nginx
 
-# sudo pkill gunicorn
+sudo pkill gunicorn
 
-# echo "starting gunicorn"
-# sudo gunicorn --bind 0.0.0.0:8000 app:app
-# echo "started gunicorn 🚀"
+echo "starting gunicorn"
+sudo gunicorn --bind 0.0.0.0:8000 app:app
+echo "started gunicorn 🚀"
 
 
 
