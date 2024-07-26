@@ -39,6 +39,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
 
-      - name: Clean up SSH key 🚀
-        if: always()
-        run: rm -f ~/.ssh/id_rsa
+      # - name: Clean up SSH key 🚀🚀
+      #   if: always()
+      #   run: rm -f ~/.ssh/id_rsa
