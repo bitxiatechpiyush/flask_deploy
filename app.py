@@ -7,7 +7,7 @@ from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/your_database_name"
+app.config["MONGO_URI"] = "mongodb+srv://Sachin:ReactIgnouproject@react-e-comm.iwiy5fr.mongodb.net/deploy_db"
 app.config['SECRET_KEY'] = 'your-secret-key'  # Change this to a random secret key
 mongo = PyMongo(app)
 CORS(app)
