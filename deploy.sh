@@ -15,6 +15,8 @@ cd /var/www/flask_deploy/
 sudo apt-get update
 echo "installing python and pip"
 sudo apt-get install -y python3 python3-pip
+sudo pip install flask_cors --break-system-packages
+sudo pip install flask_login --break-system-packages
 
 # Install application dependencies from requirements.txt
 echo "Install application dependencies from requirements.txt"
