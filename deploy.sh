@@ -22,9 +22,17 @@ sudo pip install flask_login --break-system-packages
 echo "Install application dependencies from requirements.txt"
 sudo pip install -r requirements.txt ----break-system-packages
 sudo pkill gunicorn
-sudo systemctl enable  crud_app.service
-sudo systemctl status  crud_app.service
+
+echo "started crud_app.service"
 sudo systemctl start crud_app.service
+
+echo "enable crud_app.service"
+sudo systemctl enable  crud_app.service
+
+echo "status crud_app.service"
+sudo systemctl status  crud_app.service
+
+
 sudo systemctl restart nginx
 
 
