@@ -23,6 +23,11 @@ echo "Install application dependencies from requirements.txt"
 sudo pip install -r requirements.txt ----break-system-packages
 # sudo pkill gunicorn
 
+
+sudo systemctl daemon-reload
+
+sudo systemctl restart crud_app.service
+
 echo "started crud_app.service"
 sudo systemctl start crud_app.service
 
